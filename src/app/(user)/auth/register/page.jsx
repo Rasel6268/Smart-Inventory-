@@ -1,4 +1,5 @@
 "use client";
+import api from "@/config/api/api";
 import React, { useState } from "react";
 
 const Register = () => {
@@ -12,9 +13,10 @@ const Register = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  const registerHander = (e) => {
+  const registerHander = async(e) => {
     e.preventDefault();
-    console.log(formData);
+    const res = await api.post("/auth/register", formData);
+      console.log(res.data);
   };
   return (
     <div className="min-h-screen flex items-center justify-center">
