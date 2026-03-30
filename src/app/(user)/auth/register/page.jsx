@@ -3,6 +3,19 @@ import React, { useState } from "react";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const handleInputChanage = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+  const registerHander = (e) => {
+    e.preventDefault();
+    console.log(formData);
+  };
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
@@ -10,7 +23,7 @@ const Register = () => {
           <h1 className="text-3xl font-bold text-gray-600 mb-2 text-center">
             Create Account
           </h1>
-          <form action="" className="space-y-5">
+          <form action="" onSubmit={registerHander} className="space-y-5">
             <div className="group">
               <label className="text-gray-700 text-sm font-semibold mb-2 flex items-center gap-2">
                 <svg
@@ -30,7 +43,10 @@ const Register = () => {
               </label>
               <input
                 type="text"
+                name="name"
                 placeholder="Name"
+                value={formData.name}
+                onChange={handleInputChanage}
                 className="w-full px-4 py-3 border-2 border-blue-400 rounded-xl  focus:outline-none transition-all duration-300 group-hover:border-green-300 placeholder:text-gray-500"
               />
             </div>
@@ -54,6 +70,9 @@ const Register = () => {
               <input
                 type="email"
                 placeholder="Email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChanage}
                 className="w-full px-4 py-3 border-2 border-blue-400 rounded-xl  focus:outline-none transition-all duration-300 group-hover:border-green-300 placeholder:text-gray-500"
               />
             </div>
@@ -78,11 +97,14 @@ const Register = () => {
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChanage}
                   placeholder="••••••••"
                   className="w-full px-4 py-3 border-2 border-blue-400 rounded-xl  focus:outline-none transition-all duration-300 group-hover:border-green-300 placeholder:text-gray-500"
                 />
                 <button
-                 type="button"
+                  type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute top-1/3 right-2  cursor-pointer"
                 >
@@ -124,6 +146,28 @@ const Register = () => {
                 </button>
               </div>
             </div>
+            {formData.password && (
+              <div className="mt-2">
+                <div className="flex  gap-1">
+                  <div
+                    className={`h-1 flex-1 rounded-full transition-all duration-300 ${formData.password.length > 0 ? "bg-red-500" : "bg-gray-200"}`}
+                  ></div>
+                  <div
+                    className={`h-1 flex-1 rounded-full transition-all duration-300 ${formData.password.length > 4 ? "bg-yellow-500" : "bg-gray-200"}`}
+                  ></div>
+                  <div
+                    className={`h-1 flex-1 rounded-full transition-all duration-300 ${formData.password.length > 7 ? "bg-green-500" : "bg-gray-200"}`}
+                  ></div>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  {formData.password.length === 0 && "Enter a password"}
+                  {formData.password.length > 0 &&
+                    formData.password.length <= 4 &&
+                    "Weak password"}
+                  {formData.password.length > 7 && "Strong password!"}
+                </p>
+              </div>
+            )}
             <button
               type="submit"
               className="w-full bg-linear-to-r from-blue-600 to-purple-600 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-300 relative overflow-hidden group  cursor-pointer"
