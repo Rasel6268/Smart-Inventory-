@@ -8,6 +8,7 @@ export async function POST(req) {
     await connectDb();
 
     const body = await req.json();
+    
     const { name, email, password } = body;
 
     // check if user exists
@@ -18,8 +19,7 @@ export async function POST(req) {
         { status: 400 },
       );
     }
-
-    // hash password
+   
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // create user
@@ -28,6 +28,7 @@ export async function POST(req) {
       email,
       password: hashedPassword,
     });
+    
 
     return NextResponse.json(
       {
